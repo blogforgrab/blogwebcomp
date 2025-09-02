@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "https://www.apiblog.grabatoz.ae",
+        target: "https://apiblog.grabatoz.ae",
         changeOrigin: true,
         secure: false,
       },
