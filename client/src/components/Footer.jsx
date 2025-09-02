@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaPinterestP, FaYoutube } from 'react-icons/fa';
 import { FaXTwitter, FaTiktok } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
+import { apiRequest } from '../utils/api';
 
 const Footer = () => {
   const [editorsPick, setEditorsPick] = useState([]);
@@ -16,9 +17,9 @@ const Footer = () => {
 
         // Fetch all data concurrently
         const [editorsResponse, randomResponse, categoriesResponse] = await Promise.all([
-          fetch('/api/blogs/editors-pick?limit=3'),
-          fetch('/api/blogs/random?limit=3'),
-          fetch('/api/categories/popular?limit=5')
+          apiRequest('api/blogs/editors-pick?limit=3'),
+          apiRequest('api/blogs/random?limit=3'),
+          apiRequest('api/categories/popular?limit=5')
         ]);
 
         const editorsData = await editorsResponse.json();

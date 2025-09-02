@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Plus, Edit, Trash2, Tag, X, Check } from "lucide-react"
+import { apiRequest } from "../../utils/api"
 
 const AdminTopics = () => {
   const [topics, setTopics] = useState([])
@@ -23,7 +24,7 @@ const AdminTopics = () => {
   const fetchTopics = async () => {
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch("/api/topics/admin", {
+      const response = await apiRequest("api/topics/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -101,10 +102,10 @@ const AdminTopics = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const url = editingTopic ? `/api/topics/${editingTopic._id}` : "/api/topics"
+      const url = editingTopic ? `api/topics/${editingTopic._id}` : "api/topics"
       const method = editingTopic ? "PUT" : "POST"
 
-      const response = await fetch(url, {
+      const response = await apiRequest(url, {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +145,7 @@ const AdminTopics = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch(`/api/topics/${topicId}`, {
+      const response = await apiRequest(`api/topics/${topicId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

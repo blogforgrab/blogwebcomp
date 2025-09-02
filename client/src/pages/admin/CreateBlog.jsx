@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import TipTapEditor from "../../components/TipTapEditor"
 import { Save, Eye, ArrowLeft, Upload, X } from "lucide-react"
+import { apiRequest } from "../../utils/api"
 
 const CreateBlog = () => {
   const navigate = useNavigate()
@@ -45,14 +46,14 @@ const CreateBlog = () => {
     try {
       const token = localStorage.getItem("adminToken")
       // Try admin endpoint first (may include extra fields); fall back to public list
-      let response = await fetch("/api/categories/admin", {
+      let response = await apiRequest("api/categories/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
 
       if (!response.ok) {
-        response = await fetch("/api/categories")
+        response = await apiRequest("api/categories")
       }
 
       if (response.ok) {
@@ -63,7 +64,7 @@ const CreateBlog = () => {
       console.error("Error fetching categories:", error)
       // Final fallback (in case of network error)
       try {
-        const res = await fetch("/api/categories")
+        const res = await apiRequest("api/categories")
         if (res.ok) {
           const data = await res.json()
           setCategories(Array.isArray(data) ? data : [])
@@ -76,14 +77,14 @@ const CreateBlog = () => {
     try {
       const token = localStorage.getItem("adminToken")
       // Try admin endpoint; fall back to public
-      let response = await fetch("/api/topics/admin", {
+      let response = await apiRequest("api/topics/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
 
       if (!response.ok) {
-        response = await fetch("/api/topics")
+        response = await apiRequest("api/topics")
       }
 
       if (response.ok) {
@@ -93,7 +94,7 @@ const CreateBlog = () => {
     } catch (error) {
       console.error("Error fetching topics:", error)
       try {
-        const res = await fetch("/api/topics")
+        const res = await apiRequest("api/topics")
         if (res.ok) {
           const data = await res.json()
           setTopics(Array.isArray(data) ? data : [])
@@ -106,14 +107,14 @@ const CreateBlog = () => {
     try {
       const token = localStorage.getItem("adminToken")
       // Try admin endpoint; fall back to public
-      let response = await fetch("/api/brands/admin", {
+      let response = await apiRequest("api/brands/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
 
       if (!response.ok) {
-        response = await fetch("/api/brands")
+        response = await apiRequest("api/brands")
       }
 
       if (response.ok) {
@@ -123,7 +124,7 @@ const CreateBlog = () => {
     } catch (error) {
       console.error("Error fetching brands:", error)
       try {
-        const res = await fetch("/api/brands")
+        const res = await apiRequest("api/brands")
         if (res.ok) {
           const data = await res.json()
           setBrands(Array.isArray(data) ? data : [])
@@ -237,7 +238,7 @@ const CreateBlog = () => {
       formDataUpload.append("image", file)
 
       const token = localStorage.getItem("adminToken")
-      const response = await fetch("/api/upload/image", {
+      const response = await apiRequest("api/upload/image", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -327,7 +328,7 @@ const CreateBlog = () => {
       
       console.log("Sending payload:", payload)
 
-      const response = await fetch("/api/blogs", {
+      const response = await apiRequest("api/blogs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

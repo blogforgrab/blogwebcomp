@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
 import BlogCard from "../components/BlogCard"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { apiRequest } from "../utils/api"
 
 
 const Category = () => {
@@ -28,8 +29,8 @@ const Category = () => {
     try {
       // Fetch category details and blogs in parallel
       const [categoryResponse, blogsResponse] = await Promise.all([
-        fetch(`/api/categories`),
-        fetch(`/api/blogs?category=${categoryId}&page=${currentPage}&limit=9`),
+        apiRequest(`api/categories`),
+        apiRequest(`api/blogs?category=${categoryId}&page=${currentPage}&limit=9`),
       ])
 
       const categoriesData = await categoryResponse.json()

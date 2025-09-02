@@ -15,6 +15,7 @@ const corsOptions = {
     "https://blog-frontend-alpha-ten.vercel.app", // Vite dev server
     "http://localhost:4173", // Vite preview
     "https://www.blog.grabatoz.ae", // Replace with your actual Vercel frontend URL
+    "https://blog.grabatoz.ae", // Your actual Vercel frontend URL
     
   ],
   credentials: true,

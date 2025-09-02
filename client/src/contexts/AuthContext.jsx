@@ -1,6 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect } from "react"
+import { apiRequest } from "../utils/api"
 
 const AuthContext = createContext()
 
@@ -27,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const verifyToken = async () => {
     try {
-      const response = await fetch("/api/auth/me", {
+      const response = await apiRequest("api/auth/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await apiRequest("api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

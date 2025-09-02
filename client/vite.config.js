@@ -10,7 +10,7 @@ export default defineConfig({
       "/api": {
         target: "https://apiblog.grabatoz.ae",
         changeOrigin: true,
-        secure: false,
+        secure: true,
       },
     },
   },

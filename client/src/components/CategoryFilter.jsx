@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { ChevronDown, Filter } from "lucide-react"
+import { apiRequest } from "../utils/api"
 
 
 const CategoryFilter = ({ selectedCategory, onCategoryChange }) => {
@@ -16,7 +17,7 @@ const CategoryFilter = ({ selectedCategory, onCategoryChange }) => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/categories")
+      const response = await apiRequest("api/categories")
       const data = await response.json()
       setCategories(data)
     } catch (error) {

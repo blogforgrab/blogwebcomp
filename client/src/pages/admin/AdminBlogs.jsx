@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Plus, Search, Filter, Edit, Trash2, Eye, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
+import { apiRequest } from "../../utils/api"
 
 
 const AdminBlogs = () => {
@@ -28,7 +29,7 @@ const AdminBlogs = () => {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch("/api/categories/admin", {
+      const response = await apiRequest("api/categories/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -55,7 +56,7 @@ const AdminBlogs = () => {
       if (filters.status) params.append("status", filters.status)
       if (filters.category) params.append("category", filters.category)
 
-      const response = await fetch(`/api/blogs/admin?${params}`, {
+      const response = await apiRequest(`api/blogs/admin?${params}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,7 +93,7 @@ const AdminBlogs = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch(`/api/blogs/${blogId}`, {
+      const response = await apiRequest(`api/blogs/${blogId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

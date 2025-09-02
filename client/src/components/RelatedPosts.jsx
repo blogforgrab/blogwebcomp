@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import BlogCard from "./BlogCard"
+import { apiRequest } from "../utils/api"
 
 
 const RelatedPosts = ({ blogId }) => {
@@ -11,7 +12,7 @@ const RelatedPosts = ({ blogId }) => {
   useEffect(() => {
     const fetchRelatedPosts = async () => {
       try {
-        const response = await fetch(`/api/blogs/${blogId}/related`)
+        const response = await apiRequest(`api/blogs/${blogId}/related`)
         if (response.ok) {
           const data = await response.json()
           setRelatedPosts(data)

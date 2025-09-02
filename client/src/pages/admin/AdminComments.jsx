@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useAuth } from "../../contexts/AuthContext"
+import { apiRequest } from "../../utils/api"
 
 export default function AdminComments() {
 	const { token } = useAuth()
@@ -13,8 +14,8 @@ export default function AdminComments() {
 	const fetchComments = async () => {
 		setLoading(true)
 		try {
-			const url = `/api/comments?status=${encodeURIComponent(filter)}`
-			const res = await fetch(url, {
+			const url = `api/comments?status=${encodeURIComponent(filter)}`
+			const res = await apiRequest(url, {
 				headers: { Authorization: `Bearer ${token}` },
 			})
 			const data = await res.json()
@@ -33,7 +34,7 @@ export default function AdminComments() {
 	}, [filter])
 
 	const approve = async (id) => {
-		const res = await fetch(`/api/comments/${id}/approve`, {
+		const res = await apiRequest(`api/comments/${id}/approve`, {
 			method: "PATCH",
 			headers: { Authorization: `Bearer ${token}` },
 		})
@@ -42,7 +43,7 @@ export default function AdminComments() {
 
 	const remove = async (id) => {
 		if (!window.confirm("Delete this comment?")) return
-		const res = await fetch(`/api/comments/${id}`, {
+		const res = await apiRequest(`api/comments/${id}`, {
 			method: "DELETE",
 			headers: { Authorization: `Bearer ${token}` },
 		})

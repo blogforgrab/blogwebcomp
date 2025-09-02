@@ -5,6 +5,7 @@ import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "@tiptap/extension-image"
 import Link from "@tiptap/extension-link"
+import { apiRequest } from "../utils/api"
 import {
   Bold,
   Italic,
@@ -63,7 +64,7 @@ const TipTapEditor = ({ content, onChange, placeholder = "Start writing your blo
           formData.append("image", file)
 
           const token = localStorage.getItem("adminToken")
-          const response = await fetch("/api/upload/image", {
+          const response = await apiRequest("api/upload/image", {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,

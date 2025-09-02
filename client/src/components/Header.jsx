@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Search, Menu, X, ShoppingBag, LayoutGrid, ChevronRight } from "lucide-react"
+import { apiRequest } from "../utils/api"
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -30,7 +31,7 @@ const Header = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch("/api/categories")
+      const response = await apiRequest("api/categories")
       const data = await response.json()
       setCategories(data)
     } catch (error) {
@@ -128,10 +129,10 @@ const Header = () => {
   }, [isMoreOpen])
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200  -mt-3  sm:pt-2 sticky -top-1 mb-2 z-50">
-      <div className="max-w-7xl mx-auto">
+    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 w-full">
+      <div className="max-w-7xl mx-auto w-full">
         {/* Mobile top bar: left categories toggle, centered logo, right search icon */}
-  <div className="md:hidden grid grid-cols-3 items-center py-3 px-2">
+  <div className="md:hidden grid grid-cols-3 items-center py-3 px-2 w-full">
           <div className="pl-1">
             <button
               className="p-2 text-gray-700 hover:text-gray-900"
@@ -220,7 +221,7 @@ const Header = () => {
         )}
 
         {/* Desktop/Laptop header row (unchanged) */}
-        <div className="hidden md:flex items-center justify-between my-3">
+        <div className="hidden md:flex items-center justify-between my-3 px-4 sm:px-6 lg:px-8 w-full">
           <Link to="/" className="flex items-center space-x-2">
             {showLogo ? (
               <img
@@ -261,7 +262,7 @@ const Header = () => {
           </Link>
         </div>
 
-        <div className="bg-lime-500 py-2 -mx-4 sm:-mx-6 lg:-mx-8 hidden md:block">
+        <div className="bg-lime-500 py-2 hidden md:block w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Desktop categories: centered; show More only when needed */}
             <nav className="py-1">

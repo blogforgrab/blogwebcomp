@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Plus, Edit, Trash2, Building2, X, Check } from "lucide-react"
+import { apiRequest } from "../../utils/api"
 
 const AdminBrands = () => {
   const [brands, setBrands] = useState([])
@@ -26,7 +27,7 @@ const AdminBrands = () => {
   const fetchBrands = async () => {
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch("/api/brands/admin", {
+      const response = await apiRequest("api/brands/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -94,7 +95,7 @@ const AdminBrands = () => {
       formDataUpload.append("image", file)
 
       const token = localStorage.getItem("adminToken")
-      const response = await fetch("/api/upload/image", {
+      const response = await apiRequest("api/upload/image", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -154,10 +155,10 @@ const AdminBrands = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const url = editingBrand ? `/api/brands/${editingBrand._id}` : "/api/brands"
+      const url = editingBrand ? `api/brands/${editingBrand._id}` : "api/brands"
       const method = editingBrand ? "PUT" : "POST"
 
-      const response = await fetch(url, {
+      const response = await apiRequest(url, {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -197,7 +198,7 @@ const AdminBrands = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch(`/api/brands/${brandId}`, {
+      const response = await apiRequest(`api/brands/${brandId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

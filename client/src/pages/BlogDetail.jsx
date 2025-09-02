@@ -7,6 +7,7 @@ import { FaFacebookF, FaLinkedinIn, FaInstagram, FaPinterestP, FaYoutube } from 
 import { FaXTwitter, FaTiktok } from "react-icons/fa6"
 import RelatedPosts from "../components/RelatedPosts"
 import Comments from "../components/Comments"
+import { apiRequest } from "../utils/api"
 
 
 const BlogDetail = () => {
@@ -35,7 +36,7 @@ const BlogDetail = () => {
     // Recent posts (exclude current)
     ;(async () => {
       try {
-        const res = await fetch(`/api/blogs?limit=5&sort=-publishedAt`)
+        const res = await apiRequest(`api/blogs?limit=5&sort=-publishedAt`)
         const data = await res.json()
         if (res.ok) {
           const items = (data.blogs || []).filter((b) => b.slug !== blog.slug)
@@ -91,7 +92,7 @@ const BlogDetail = () => {
     setError("")
 
     try {
-      const response = await fetch(`/api/blogs/${slug}`)
+      const response = await apiRequest(`api/blogs/${slug}`)
       const data = await response.json()
 
       if (response.ok) {

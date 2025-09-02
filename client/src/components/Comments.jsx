@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { apiRequest } from "../utils/api"
 
 // Small helper to keep a stable clientRef per email for this browser
 function getClientRef() {
@@ -38,12 +39,12 @@ export default function Comments({ blogId, blogTitle }) {
   const fetchComments = async () => {
     setLoading(true)
     try {
-      const url = new URL(`/api/comments/blog/${blogId}`, window.location.origin)
+      const url = new URL(`api/comments/blog/${blogId}`, window.location.origin)
       if (form.email) {
         url.searchParams.set("email", form.email)
         url.searchParams.set("clientRef", clientRef)
       }
-      const res = await fetch(url.toString().replace(window.location.origin, ""))
+      const res = await apiRequest(url.toString().replace(window.location.origin + "/", ""))
       const data = await res.json()
       if (res.ok) setComments(data)
     } catch (e) {
@@ -72,7 +73,7 @@ export default function Comments({ blogId, blogTitle }) {
     setError("")
     setSubmitting(true)
     try {
-  const res = await fetch("/api/comments", {
+  const res = await apiRequest("api/comments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, blog: blogId, clientRef }),
@@ -103,7 +104,7 @@ export default function Comments({ blogId, blogTitle }) {
     e.preventDefault()
     setVerifyError("")
     try {
-      const res = await fetch("/api/comments/verify", {
+      const res = await apiRequest("api/comments/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ commentId: pending.commentId, code, email: pending.email }),

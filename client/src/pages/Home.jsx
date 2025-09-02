@@ -5,6 +5,7 @@ import { useSearchParams, Link } from "react-router-dom"
 import BlogCard from "../components/BlogCard"
 import CategoryFilter from "../components/CategoryFilter"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { getApiUrl, apiRequest } from "../utils/api"
 
 const Home = () => {
   const [blogs, setBlogs] = useState([])
@@ -176,7 +177,7 @@ const Home = () => {
         params.append("search", searchQuery)
       }
 
-      const response = await fetch(`/api/blogs?${params}`)
+      const response = await apiRequest(`api/blogs?${params}`)
       const data = await response.json()
 
       if (response.ok) {
@@ -207,7 +208,7 @@ const Home = () => {
         sort: "-publishedAt",
       })
 
-      const response = await fetch(`/api/blogs?${params}`)
+      const response = await apiRequest(`api/blogs?${params}`)
       const data = await response.json()
 
       if (response.ok) {
@@ -231,7 +232,7 @@ const Home = () => {
   
   const fetchFeaturedBlogs = async () => {
     try {
-      const response = await fetch("/api/blogs?limit=9&featured=true&sort=-publishedAt")
+      const response = await apiRequest("api/blogs?limit=9&featured=true&sort=-publishedAt")
       const data = await response.json()
       if (response.ok) {
   setFeaturedBlogs(data.blogs)
@@ -291,7 +292,7 @@ const Home = () => {
     try {
   // Fetch only blogs marked as Trending This Week
   // Prefer the dedicated endpoint; fallback kept simple if needed
-  const response = await fetch("/api/blogs/trending?limit=20")
+  const response = await apiRequest("api/blogs/trending?limit=20")
       const data = await response.json()
       if (response.ok) {
   const list = Array.isArray(data) ? data : data.blogs

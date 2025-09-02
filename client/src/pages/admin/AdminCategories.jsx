@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Plus, Edit, Trash2, FolderOpen, X, Check } from "lucide-react"
+import { apiRequest } from "../../utils/api"
 
 
 const AdminCategories = () => {
@@ -24,7 +25,7 @@ const AdminCategories = () => {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch("/api/categories/admin", {
+      const response = await apiRequest("api/categories/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -102,11 +103,11 @@ const AdminCategories = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const url = editingCategory ? `/api/categories/${editingCategory._id}` : "/api/categories"
+      const url = editingCategory ? `api/categories/${editingCategory._id}` : "api/categories"
 
       const method = editingCategory ? "PUT" : "POST"
 
-      const response = await fetch(url, {
+      const response = await apiRequest(url, {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -146,7 +147,7 @@ const AdminCategories = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch(`/api/categories/${categoryId}`, {
+      const response = await apiRequest(`api/categories/${categoryId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

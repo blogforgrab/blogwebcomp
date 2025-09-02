@@ -29,7 +29,10 @@ function App() {
               element={
                 <>
                   <Header />
-                  <Home />
+                  <main className="flex-1">
+                    <Home />
+                  </main>
+                  <Footer />
                 </>
               }
             />
@@ -38,7 +41,10 @@ function App() {
               element={
                 <>
                   <Header />
-                  <BlogDetail />
+                  <main className="flex-1">
+                    <BlogDetail />
+                  </main>
+                  <Footer />
                 </>
               }
             />
@@ -47,7 +53,10 @@ function App() {
               element={
                 <>
                   <Header />
-                  <Category />
+                  <main className="flex-1">
+                    <Category />
+                  </main>
+                  <Footer />
                 </>
               }
             />
@@ -118,12 +127,9 @@ function App() {
                 </AdminLayout>
               }
             />
-          </Routes>
-          <Footer />
+            </Routes>
         </div>
       </Router>
     </AuthProvider>
   )
-}
-
-export default App
+}export default App

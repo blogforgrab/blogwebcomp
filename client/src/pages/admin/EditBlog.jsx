@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import TipTapEditor from "../../components/TipTapEditor"
 import { Save, Eye, ArrowLeft, Upload, X } from "lucide-react"
+import { apiRequest } from "../../utils/api"
 
 
 const EditBlog = () => {
@@ -37,14 +38,14 @@ const EditBlog = () => {
     try {
       const token = localStorage.getItem("adminToken")
       // Try admin endpoint first; fall back to public list if unauthorized
-      let response = await fetch("/api/categories/admin", {
+      let response = await apiRequest("api/categories/admin", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
 
       if (!response.ok) {
-        response = await fetch("/api/categories")
+        response = await apiRequest("api/categories")
       }
 
       if (response.ok) {
@@ -54,7 +55,7 @@ const EditBlog = () => {
     } catch (error) {
       console.error("Error fetching categories:", error)
       try {
-        const res = await fetch("/api/categories")
+        const res = await apiRequest("api/categories")
         if (res.ok) {
           const data = await res.json()
           setCategories(Array.isArray(data) ? data : [])
@@ -66,7 +67,7 @@ const EditBlog = () => {
   const fetchBlog = useCallback(async () => {
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch(`/api/blogs/admin?limit=1000`, {
+      const response = await apiRequest(`api/blogs/admin?limit=1000`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -192,7 +193,7 @@ const EditBlog = () => {
       formDataUpload.append("image", file)
 
       const token = localStorage.getItem("adminToken")
-      const response = await fetch("/api/upload/image", {
+      const response = await apiRequest("api/upload/image", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -252,7 +253,7 @@ const EditBlog = () => {
 
     try {
       const token = localStorage.getItem("adminToken")
-      const response = await fetch(`/api/blogs/${id}`, {
+      const response = await apiRequest(`api/blogs/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { FileText, TrendingUp, FolderOpen, Eye, Plus, Calendar, Tag, Building2 } from "lucide-react"
+import { apiRequest } from "../../utils/api"
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
@@ -29,10 +30,10 @@ const AdminDashboard = () => {
       }
 
       const [blogsResponse, categoriesResponse, topicsResponse, brandsResponse] = await Promise.all([
-        fetch("/api/blogs/admin?limit=5", { headers }),
-        fetch("/api/categories/admin", { headers }),
-        fetch("/api/topics/admin", { headers }),
-        fetch("/api/brands/admin", { headers }),
+        apiRequest("api/blogs/admin?limit=5", { headers }),
+        apiRequest("api/categories/admin", { headers }),
+        apiRequest("api/topics/admin", { headers }),
+        apiRequest("api/brands/admin", { headers }),
       ])
 
       if (blogsResponse.ok && categoriesResponse.ok) {
