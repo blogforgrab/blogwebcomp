@@ -12,7 +12,7 @@ const app = express()
 const corsOptions = {
   origin: [
     "http://localhost:3000",
-    "http://localhost:5173", // Vite dev server
+    "https://blog-frontend-alpha-ten.vercel.app", // Vite dev server
     "http://localhost:4173", // Vite preview
     "https://www.blog.grabatoz.ae", // Replace with your actual Vercel frontend URL
     
