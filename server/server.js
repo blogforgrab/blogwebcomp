@@ -8,21 +8,62 @@ dotenv.config()
 
 const app = express()
 
+// Pre-flight CORS handler - must be before other middleware
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:4173",
+    "https://blog-frontend-alpha-ten.vercel.app",
+    "https://www.blog.grabatoz.ae",
+    "https://blog.grabatoz.ae"
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Max-Age', '86400');
+  
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+  
+  next();
+});
+
 // Enhanced CORS configuration
 const corsOptions = {
   origin: [
     "http://localhost:3000",
-    "https://blog-frontend-alpha-ten.vercel.app", // Vite dev server
+    "http://localhost:5173", // Vite dev server
     "http://localhost:4173", // Vite preview
-    "https://www.blog.grabatoz.ae", // Replace with your actual Vercel frontend URL
-    "https://blog.grabatoz.ae", // Your actual Vercel frontend URL
-    
+    "https://blog-frontend-alpha-ten.vercel.app",
+    "https://www.blog.grabatoz.ae",
+    "https://blog.grabatoz.ae",
   ],
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  allowedHeaders: [
+    'Content-Type', 
+    'Authorization', 
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'Access-Control-Request-Method',
+    'Access-Control-Request-Headers'
+  ],
+  exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar']
 }
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions))
 
 // Middleware
 app.use(cors(corsOptions))

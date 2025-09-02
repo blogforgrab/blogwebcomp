@@ -25,8 +25,11 @@ export const apiRequest = async (endpoint, options = {}) => {
       ...options,
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         ...options.headers,
       },
+      credentials: 'include', // Include credentials for CORS
+      mode: 'cors', // Explicitly set CORS mode
     });
 
     if (!response.ok) {
