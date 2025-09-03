@@ -13,11 +13,13 @@ const Header = () => {
   const [isMoreOpen, setIsMoreOpen] = useState(false)
   const [showLogo, setShowLogo] = useState(true)
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false)
+  const [headerHeight, setHeaderHeight] = useState(0)
 
   const navListRef = useRef(null)
   const allInOneRef = useRef(null)
   const moreBtnRef = useRef(null)
   const itemRefs = useRef([]) // per-category refs for measuring widths
+  const headerRef = useRef(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -128,8 +130,24 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", onDocClick)
   }, [isMoreOpen])
 
+  // Measure header height so we can add a spacer and avoid content being hidden
+  useLayoutEffect(() => {
+    const el = headerRef.current
+    if (!el) return
+    const update = () => setHeaderHeight(el.offsetHeight || 0)
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    window.addEventListener("resize", update)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener("resize", update)
+    }
+  }, [isMobileSearchOpen, categories, visibleCount])
+
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 w-full">
+    <>
+    <header ref={headerRef} className="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50 w-full">
       <div className="max-w-7xl mx-auto w-full">
         {/* Mobile top bar: left categories toggle, centered logo, right search icon */}
   <div className="md:hidden grid grid-cols-3 items-center py-3 px-2 w-full">
@@ -338,7 +356,7 @@ const Header = () => {
 
         {/* Mobile Categories Drawer */}
         {isMenuOpen && (
-          <div className="md:hidden fixed inset-0 z-50">
+          <div className="md:hidden fixed inset-0 z-[60]">
             {/* Backdrop */}
             <div
               className="absolute inset-0 bg-black/40"
@@ -396,6 +414,9 @@ const Header = () => {
         )}
       </div>
     </header>
+  {/* Spacer to offset the fixed header height */}
+  <div aria-hidden="true" style={{ height: headerHeight }} />
+  </>
   )
 }
 
